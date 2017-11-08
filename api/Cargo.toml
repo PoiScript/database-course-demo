@@ -4,4 +4,9 @@ version = "0.1.0"
 authors = ["PoiScript <poiscript@gmail.com>"]
 
 [dependencies]
+nom = "^3.2"
+serde = "1.0"
+serde_derive = "1.0"
+futures = "0.1.14"
+hyper = "0.11.2"
 postgres = "0.15"
