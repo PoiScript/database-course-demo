@@ -3,6 +3,9 @@ extern crate nom;
 extern crate hyper;
 extern crate chrono;
 extern crate futures;
+#[macro_use]
+extern crate log;
+extern crate env_logger;
 extern crate serde;
 extern crate serde_json;
 #[macro_use]
@@ -15,8 +18,11 @@ extern crate postgres_derive;
 mod service;
 mod database;
 mod types;
+mod error;
 
 fn main() {
+  env_logger::init();
+
   let addr = "0.0.0.0:3000".parse().unwrap();
   let server = hyper::server::Http::new().bind(&addr, || {
     let db = database::Database::new("postgres://poi@localhost:5432/store");

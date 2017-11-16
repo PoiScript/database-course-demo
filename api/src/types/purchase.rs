@@ -2,6 +2,7 @@ use postgres::Connection;
 use chrono::NaiveDateTime;
 
 use database::Query;
+use error::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct Purchase {
@@ -32,7 +33,7 @@ impl Purchase {
 }
 
 impl Query for Purchase {
-  fn create(&self, conn: &Connection) {
+  fn create(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO purchase (id, date, is_resolved, customer_id, warehouse_id,
       responsible_staff, supplied_goods_id, supplied_goods_count)
@@ -47,14 +48,15 @@ impl Query for Purchase {
         &self.supplied_goods_id,
         &self.supplied_goods_count
       ]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 
-  fn get_all(conn: &Connection) -> Vec<Self> {
+  fn get_all(conn: &Connection) -> Result<Vec<Self>, Error> {
     let mut vec = Vec::new();
     for row in &conn.query("SELECT id,
       date, is_resolved, customer_id, warehouse_id, responsible_staff,
-      supplied_goods_id, supplied_goods_count FROM purchase", &[]).unwrap() {
+      supplied_goods_id, supplied_goods_count FROM purchase", &[])? {
       vec.push(Purchase::new(
         row.get(1),
         row.get(2),
@@ -66,15 +68,15 @@ impl Query for Purchase {
         row.get(8)
       ));
     }
-    vec
+    Ok(vec)
   }
 
-  fn get_by_id(conn: &Connection, id: i32) -> Self {
+  fn get_by_id(conn: &Connection, id: i32) -> Result<Self, Error> {
     let rows = &conn.query("SELECT id,
       date, is_resolved, customer_id, warehouse_id, responsible_staff,
-      supplied_goods_id, supplied_goods_count FROM purchase WHERE id = $1", &[&id]).unwrap();
+      supplied_goods_id, supplied_goods_count FROM purchase WHERE id = $1", &[&id])?;
     let first_row = rows.get(0);
-    Purchase::new(
+    Ok(Purchase::new(
       first_row.get(1),
       first_row.get(2),
       first_row.get(3),
@@ -83,15 +85,16 @@ impl Query for Purchase {
       first_row.get(6),
       first_row.get(7),
       first_row.get(8)
-    )
+    ))
   }
 
-  fn update(&self, conn: &Connection) {
+  fn update(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "UPDATE purchase date = $1 is_resolved = $2 customer_id = $3 warehouse_id = $4
       responsible_staff = $5 supplied_goods_id = $6 supplied_goods_count = $7 WHERE id = $8",
       &[&self.date, &self.is_resolved, &self.customer_id, &self.warehouse_id,
         &self.responsible_staff, &self.supplied_goods_id, &self.supplied_goods_count, &self.id]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 }

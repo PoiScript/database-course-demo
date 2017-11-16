@@ -1,11 +1,9 @@
-use futures;
+use futures::future;
 use futures::future::Future;
 
 use hyper;
 use hyper::{Method, StatusCode};
 use hyper::server::{Request, Response, Service};
-
-use serde_json::to_string;
 
 use database::Database;
 use types::*;
@@ -29,37 +27,30 @@ impl Service for ApiService {
 
   fn call(&self, req: Request) -> Self::Future {
     match (req.method(), req.path()) {
-      (&Method::Get, "/api/goods") => {
-        let all = &self.db.get_all::<Goods>();
-        let json = to_string(all).unwrap();
-        Box::new(futures::future::ok(
-          Response::new().with_body(json)
+      (&Method::Get, path) => {
+        Box::new(
+          (match path {
+            "/api/goods" => self.db.get_all::<Goods>(),
+            "/api/customer" => self.db.get_all::<Customer>(),
+            "/api/purchase" => self.db.get_all::<Purchase>(),
+            "/api/receipt" => self.db.get_all::<Receipt>(),
+            "/api/staff" => self.db.get_all::<Staff>(),
+            _ => Box::new(future::done(
+              Ok(r#"{"error":{"code":"error/not-found"}}"#.to_string())
+            ))
+          })
+            .or_else(|e| {
+              error!("{:?}", e);
+              Ok(e.json())
+            })
+            .and_then(|s| Ok(Response::new().with_body(s)))
+        )
+      }
+      _ => {
+        Box::new(future::ok(
+          Response::new().with_status(StatusCode::NotFound)
         ))
       }
-      (&Method::Get, "/api/staff") => {
-        let all = &self.db.get_all::<Staff>();
-        let json = to_string(all).unwrap();
-        Box::new(futures::future::ok(
-          Response::new().with_body(json)
-        ))
-      }
-      (&Method::Get, "/api/warehouse") => {
-        let all = &self.db.get_all::<Warehouse>();
-        let json = to_string(all).unwrap();
-        Box::new(futures::future::ok(
-          Response::new().with_body(json)
-        ))
-      }
-      (&Method::Get, "/api/receipt") => {
-        let all = &self.db.get_all::<Receipt>();
-        let json = to_string(all).unwrap();
-        Box::new(futures::future::ok(
-          Response::new().with_body(json)
-        ))
-      }
-      _ => Box::new(futures::future::ok(
-        Response::new().with_status(StatusCode::NotFound)
-      ))
     }
   }
 }

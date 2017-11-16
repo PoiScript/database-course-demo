@@ -1,6 +1,7 @@
 use postgres::Connection;
 
 use database::Query;
+use error::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct Warehouse {
@@ -17,16 +18,17 @@ impl Warehouse {
 }
 
 impl Query for Warehouse {
-  fn create(&self, conn: &Connection) {
+  fn create(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO warehouse (id, name, address, responsible_staff) VALUES ($1, $2, $3, $4)",
       &[&self.id, &self.name, &self.address, &self.responsible_staff]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 
-  fn get_all(conn: &Connection) -> Vec<Self> {
+  fn get_all(conn: &Connection) -> Result<Vec<Self>, Error> {
     let mut vec = Vec::new();
-    for row in &conn.query("SELECT id, name, address, responsible_staff FROM warehouse", &[]).unwrap() {
+    for row in &conn.query("SELECT id, name, address, responsible_staff FROM warehouse", &[])? {
       vec.push(Warehouse::new(
         row.get(0),
         row.get(1),
@@ -34,24 +36,25 @@ impl Query for Warehouse {
         row.get(3)
       ));
     }
-    vec
+    Ok(vec)
   }
 
-  fn get_by_id(conn: &Connection, id: i32) -> Self {
-    let rows = &conn.query("SELECT id, name, address, responsible_staff FROM warehouse WHERE id = $1", &[&id]).unwrap();
+  fn get_by_id(conn: &Connection, id: i32) -> Result<Self, Error> {
+    let rows = &conn.query("SELECT id, name, address, responsible_staff FROM warehouse WHERE id = $1", &[&id])?;
     let first_row = rows.get(0);
-    Warehouse::new(
+    Ok(Warehouse::new(
       first_row.get(0),
       first_row.get(1),
       first_row.get(2),
       first_row.get(3)
-    )
+    ))
   }
 
-  fn update(&self, conn: &Connection) {
+  fn update(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "UPDATE warehouse SET name = $1, address = $2, responsible_staff = $3 WHERE id = $4",
       &[&self.name, &self.address, &self.responsible_staff, &self.id]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 }

@@ -2,6 +2,7 @@ use postgres::Connection;
 use chrono::NaiveDateTime;
 
 use database::Query;
+use error::Error;
 
 #[derive(Serialize, Deserialize)]
 pub struct Receipt {
@@ -30,7 +31,7 @@ impl Receipt {
 }
 
 impl Query for Receipt {
-  fn create(&self, conn: &Connection) {
+  fn create(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO receipt (id, date, is_resolved, warehouse_id,
       responsible_staff, supplied_goods_id, supplied_goods_count)
@@ -44,14 +45,15 @@ impl Query for Receipt {
         &self.supplied_goods_id,
         &self.supplied_goods_count
       ]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 
-  fn get_all(conn: &Connection) -> Vec<Self> {
+  fn get_all(conn: &Connection) -> Result<Vec<Self>, Error> {
     let mut vec = Vec::new();
     for row in &conn.query("SELECT id,
       date, is_resolved, warehouse_id, responsible_staff,
-      supplied_goods_id, supplied_goods_count FROM receipt", &[]).unwrap() {
+      supplied_goods_id, supplied_goods_count FROM receipt", &[])? {
       vec.push(Receipt::new(
         row.get(1),
         row.get(2),
@@ -62,15 +64,15 @@ impl Query for Receipt {
         row.get(7)
       ));
     }
-    vec
+    Ok(vec)
   }
 
-  fn get_by_id(conn: &Connection, id: i32) -> Self {
+  fn get_by_id(conn: &Connection, id: i32) -> Result<Self, Error> {
     let rows = &conn.query("SELECT id,
       date, is_resolved, warehouse_id, responsible_staff,
-      supplied_goods_id, supplied_goods_count FROM receipt WHERE id = $1", &[&id]).unwrap();
+      supplied_goods_id, supplied_goods_count FROM receipt WHERE id = $1", &[&id])?;
     let first_row = rows.get(0);
-    Receipt::new(
+    Ok(Receipt::new(
       first_row.get(1),
       first_row.get(2),
       first_row.get(3),
@@ -78,16 +80,17 @@ impl Query for Receipt {
       first_row.get(5),
       first_row.get(6),
       first_row.get(7),
-    )
+    ))
   }
 
-  fn update(&self, conn: &Connection) {
+  fn update(&self, conn: &Connection) -> Result<(), Error> {
     &conn.execute(
       "UPDATE receipt date = $1
       is_resolved = $2 warehouse_id = $3 responsible_staff = $4
       supplied_goods_id = $5 supplied_goods_count = $6 WHERE id = $7",
       &[&self.date, &self.is_resolved, &self.warehouse_id, &self.responsible_staff,
         &self.supplied_goods_id, &self.supplied_goods_count, &self.id]
-    ).unwrap();
+    )?;
+    Ok(())
   }
 }
