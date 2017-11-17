@@ -1,4 +1,5 @@
 use postgres::Connection;
+use postgres::rows::Row;
 
 use database::Query;
 use error::Error;
@@ -14,6 +15,14 @@ impl Goods {
   fn new(id: i32, name: String, sale_price: f32) -> Goods {
     Goods { id, name, sale_price }
   }
+
+  fn from_row(row: Row) -> Goods {
+    Goods::new(
+      row.get(0),
+      row.get(1),
+      row.get(2)
+    )
+  }
 }
 
 impl Query for Goods {
@@ -28,19 +37,14 @@ impl Query for Goods {
   fn get_all(conn: &Connection) -> Result<Vec<Self>, Error> {
     let mut vec = Vec::new();
     for row in &conn.query("SELECT id, name, sale_price FROM goods", &[])? {
-      vec.push(Goods::new(row.get(0), row.get(1), row.get(2)));
+      vec.push(Goods::from_row(row));
     }
     Ok(vec)
   }
 
   fn get_by_id(conn: &Connection, id: i32) -> Result<Self, Error> {
     let rows = &conn.query("SELECT id, name, sale_price FROM goods WHERE id = $1", &[&id])?;
-    let first_row = rows.get(0);
-    Ok(Goods::new(
-      first_row.get(0),
-      first_row.get(1),
-      first_row.get(2)
-    ))
+    Ok(Goods::from_row(rows.get(0)))
   }
 
   fn update(&self, conn: &Connection) -> Result<(), Error> {
@@ -48,6 +52,11 @@ impl Query for Goods {
       "UPDATE goods SET name = $1, sale_price = $2 WHERE id = $3",
       &[&self.name, &self.sale_price, &self.id]
     )?;
+    Ok(())
+  }
+
+  fn delete_by_id(conn: &Connection, id: i32) -> Result<(), Error> {
+    &conn.execute("DELETE FROM goods WHERE id = $1", &[&id])?;
     Ok(())
   }
 }

@@ -33,6 +33,10 @@ impl Database {
         .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
     )
   }
+
+  pub fn delete_by_id<T: Query + 'static>(&self, id: i32) -> Box<Future<Item=(), Error=Error>> {
+    Box::new(futures::done(T::delete_by_id(&self.conn, id)))
+  }
 }
 
 pub trait Query where Self: Sized + Serialize {
@@ -40,4 +44,5 @@ pub trait Query where Self: Sized + Serialize {
   fn get_by_id(conn: &Connection, id: i32) -> Result<Self, Error>;
   fn get_all(conn: &Connection) -> Result<Vec<Self>, Error>;
   fn update(&self, conn: &Connection) -> Result<(), Error>;
+  fn delete_by_id(conn: &Connection, id: i32) -> Result<(), Error>;
 }

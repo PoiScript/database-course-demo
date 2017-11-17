@@ -35,9 +35,7 @@ impl Service for ApiService {
             "/api/purchase" => self.db.get_all::<Purchase>(),
             "/api/receipt" => self.db.get_all::<Receipt>(),
             "/api/staff" => self.db.get_all::<Staff>(),
-            _ => Box::new(future::done(
-              Ok(r#"{"error":{"code":"error/not-found"}}"#.to_string())
-            ))
+            _ => Box::new(future::ok(r#"{"error":{"code":"error/not-found"}}"#.to_string()))
           })
             .or_else(|e| {
               error!("{:?}", e);
