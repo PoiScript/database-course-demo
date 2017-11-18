@@ -13,7 +13,7 @@ pub struct SuppliedGoods {
 }
 
 impl SuppliedGoods {
-  fn new(id: i32, original_cost: f32, goods_id: i32, supplier_id: i32) -> SuppliedGoods {
+  pub fn new(id: i32, original_cost: f32, goods_id: i32, supplier_id: i32) -> SuppliedGoods {
     SuppliedGoods { id, original_cost, goods_id, supplier_id }
   }
 

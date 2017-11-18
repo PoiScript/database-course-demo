@@ -18,7 +18,7 @@ pub struct Purchase {
 }
 
 impl Purchase {
-  fn new(id: i32, date: NaiveDateTime, is_resolved: bool, customer_id: i32, warehouse_id: i32,
+  pub fn new(id: i32, date: NaiveDateTime, is_resolved: bool, customer_id: i32, warehouse_id: i32,
          responsible_staff: i32, supplied_goods_id: i32, supplied_goods_count: i32) -> Purchase {
     Purchase {
       id,

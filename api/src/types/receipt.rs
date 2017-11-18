@@ -17,7 +17,7 @@ pub struct Receipt {
 }
 
 impl Receipt {
-  fn new(id: i32, date: NaiveDateTime, is_resolved: bool, warehouse_id: i32,
+  pub fn new(id: i32, date: NaiveDateTime, is_resolved: bool, warehouse_id: i32,
          responsible_staff: i32, supplied_goods_id: i32, supplied_goods_count: i32) -> Receipt {
     Receipt {
       id,

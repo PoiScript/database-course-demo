@@ -7,6 +7,7 @@ use serde::Serialize;
 use serde_json::to_string;
 
 use error::Error;
+use types::*;
 
 pub struct Database {
   conn: Connection
@@ -28,14 +29,31 @@ impl Database {
   }
 
   pub fn get_all<T: Query + 'static>(&self) -> Box<Future<Item=String, Error=Error>> {
-    Box::new(
-      futures::done(T::get_all(&self.conn))
-        .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
-    )
+    Box::new(futures::done(T::get_all(&self.conn)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+    ))
   }
 
   pub fn delete_by_id<T: Query + 'static>(&self, id: i32) -> Box<Future<Item=(), Error=Error>> {
     Box::new(futures::done(T::delete_by_id(&self.conn, id)))
+  }
+
+  pub fn join_purchase(&self) -> Box<Future<Item=String, Error=Error>> {
+    Box::new(futures::done(JoinedPurchase::get_all(&self.conn)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+    ))
+  }
+
+  pub fn join_supplied_goods(&self) -> Box<Future<Item=String, Error=Error>> {
+    Box::new(futures::done(JoinedSuppliedGoods::get_all(&self.conn)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+    ))
+  }
+
+  pub fn join_receipt(&self) -> Box<Future<Item=String, Error=Error>> {
+    Box::new(futures::done(JoinedReceipt::get_all(&self.conn)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+    ))
   }
 }
 

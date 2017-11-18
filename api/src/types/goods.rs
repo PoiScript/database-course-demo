@@ -12,7 +12,7 @@ pub struct Goods {
 }
 
 impl Goods {
-  fn new(id: i32, name: String, sale_price: f32) -> Goods {
+  pub fn new(id: i32, name: String, sale_price: f32) -> Goods {
     Goods { id, name, sale_price }
   }
 

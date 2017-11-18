@@ -9,11 +9,11 @@ pub struct Warehouse {
   id: i32,
   name: String,
   address: String,
-  responsible_staff: i32,
+  responsible_staff: i32
 }
 
 impl Warehouse {
-  fn new(id: i32, name: String, address: String, responsible_staff: i32) -> Warehouse {
+  pub fn new(id: i32, name: String, address: String, responsible_staff: i32) -> Warehouse {
     Warehouse { id, name, address, responsible_staff }
   }
 

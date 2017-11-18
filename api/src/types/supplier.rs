@@ -15,7 +15,7 @@ pub struct Supplier {
 }
 
 impl Supplier {
-  fn new(id: i32, zip: i32, tele: i32, name: String, contact: String, address: String) -> Supplier {
+  pub fn new(id: i32, zip: i32, tele: i32, name: String, contact: String, address: String) -> Supplier {
     Supplier { id, zip, tele, name, contact, address }
   }
 

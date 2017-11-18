@@ -6,7 +6,7 @@ use error::Error;
 
 #[derive(Debug, ToSql, FromSql, Serialize, Deserialize)]
 #[postgres(name = "department")]
-enum Department {
+pub enum Department {
   Selling,
   Warehouseman,
   Purchasing
@@ -22,7 +22,7 @@ pub struct Staff {
 }
 
 impl Staff {
-  fn new(id: i32, tele: i32, name: String, address: String, staff_department: Department) -> Staff {
+  pub fn new(id: i32, tele: i32, name: String, address: String, staff_department: Department) -> Staff {
     Staff { id, tele, name, address, staff_department }
   }
 

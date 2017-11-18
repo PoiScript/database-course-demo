@@ -30,10 +30,10 @@ impl Service for ApiService {
       (&Method::Get, path) => {
         Box::new(
           (match path {
-            "/api/goods" => self.db.get_all::<Goods>(),
+            "/api/goods" => self.db.join_supplied_goods(),
             "/api/customer" => self.db.get_all::<Customer>(),
-            "/api/purchase" => self.db.get_all::<Purchase>(),
-            "/api/receipt" => self.db.get_all::<Receipt>(),
+            "/api/purchase" => self.db.join_purchase(),
+            "/api/receipt" => self.db.join_receipt(),
             "/api/staff" => self.db.get_all::<Staff>(),
             _ => Box::new(future::ok(r#"{"error":{"code":"error/not-found"}}"#.to_string()))
           })
