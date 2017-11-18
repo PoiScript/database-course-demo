@@ -9,7 +9,7 @@ use error::Error;
 pub struct Purchase {
   id: i32,
   date: NaiveDateTime,
-  is_resolved: i32,
+  is_resolved: bool,
   customer_id: i32,
   warehouse_id: i32,
   responsible_staff: i32,
@@ -18,7 +18,7 @@ pub struct Purchase {
 }
 
 impl Purchase {
-  fn new(id: i32, date: NaiveDateTime, is_resolved: i32, customer_id: i32, warehouse_id: i32,
+  fn new(id: i32, date: NaiveDateTime, is_resolved: bool, customer_id: i32, warehouse_id: i32,
          responsible_staff: i32, supplied_goods_id: i32, supplied_goods_count: i32) -> Purchase {
     Purchase {
       id,
@@ -34,14 +34,14 @@ impl Purchase {
 
   fn from_row(row: Row) -> Purchase {
     Purchase::new(
+      row.get(0),
       row.get(1),
       row.get(2),
       row.get(3),
       row.get(4),
       row.get(5),
       row.get(6),
-      row.get(7),
-      row.get(8)
+      row.get(7)
     )
   }
 }
