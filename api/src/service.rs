@@ -70,7 +70,7 @@ impl Service for ApiService {
           CUSTOMER => self.db.get_all::<Customer>(),
           PURCHASE => self.db.join_purchase(),
           RECEIPT => self.db.join_receipt(),
-          STAFF => self.db.get_all::<Staff>(),
+          STAFF => self.db.join_staff(),
           _ => Err(Error::NotFound)
         })
           .and_then(|s| Ok(Response::new().with_body(s)))

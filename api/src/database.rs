@@ -46,6 +46,11 @@ impl Database {
     JoinedReceipt::get_all(&self.conn)
       .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
   }
+
+  pub fn join_staff(&self) -> Result<String, Error> {
+    JoinedStaff::get_all(&self.conn)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+  }
 }
 
 pub trait Query where Self: Sized + Serialize {

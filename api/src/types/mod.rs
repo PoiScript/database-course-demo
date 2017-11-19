@@ -24,7 +24,7 @@ pub struct Id {
   pub id: i32
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct JoinedPurchase {
   pub customer: Customer,
   pub warehouse: Warehouse,
@@ -92,7 +92,7 @@ impl JoinedReceipt {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct JoinedSuppliedGoods {
   goods: Goods,
   supplier: Supplier,
@@ -127,9 +127,33 @@ impl JoinedSuppliedGoods {
   }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct JoinedStaff {
   staff: Staff,
-  receipt_total: i32,
-  purchase_total: i32
+  receipt_total: f64
+}
+
+impl JoinedStaff {
+  pub fn get_all(conn: &Connection) -> Result<Vec<Self>, Error> {
+    let mut vec = Vec::new();
+    for row in &conn.query(
+      "SELECT s.id, s.tele, s.name, s.address, s.staff_department, coalesce(SUM(total), 0)
+      FROM staff AS s
+      LEFT JOIN (
+        SELECT r.responsible_staff, supplied_goods_count * original_cost as total
+        FROM receipt AS r, supplied_goods AS g WHERE r.supplied_goods_id = g.id
+      ) AS r ON s.id = r.responsible_staff
+      GROUP BY s.id", &[]
+    )? {
+      vec.push(JoinedStaff {
+        staff: Staff::new(
+          row.get(0), row.get(1),
+          row.get(2), row.get(3),
+          row.get(4)
+        ),
+        receipt_total: row.get(5)
+      });
+    }
+    Ok(vec)
+  }
 }
