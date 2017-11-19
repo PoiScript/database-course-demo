@@ -1,0 +1,32 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav class="nav">
+    <mat-nav-list>
+      <mat-list-item>Item 1</mat-list-item>
+      <mat-list-item>Item 2</mat-list-item>
+      <mat-list-item>Item 3</mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <div class="content">
+    <mat-toolbar class="toolbar">
+      <button mat-icon-button (click)="sidenav.open()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      My App
+    </mat-toolbar>
+    <div class="ribbon"></div>
+    <main>
+      <h1 class="header">Poi</h1>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            title
+          </mat-panel-title>
+          <mat-panel-description>
+            description
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>more</p>
+      </mat-expansion-panel>
+    </main>
+  </div>
+</mat-sidenav-container>
