@@ -21,21 +21,17 @@ impl Supplier {
 
   fn from_row(row: Row) -> Supplier {
     Supplier::new(
-      row.get(0),
-      row.get(1),
-      row.get(2),
-      row.get(3),
-      row.get(4),
-      row.get(5)
+      row.get(0), row.get(1), row.get(2),
+      row.get(3), row.get(4), row.get(5)
     )
   }
 }
 
 impl Query for Supplier {
-  fn create(&self, conn: &Connection) -> Result<(), Error> {
+  fn create(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO supplier (id, zip, tele, name, contact, address) VALUES ($1, $2, $3, $4, $5, $6)",
-      &[&self.id, &self.zip, &self.tele, &self.name, &self.contact, &self.address]
+      &[&obj.id, &obj.zip, &obj.tele, &obj.name, &obj.contact, &obj.address]
     )?;
     Ok(())
   }
@@ -53,10 +49,10 @@ impl Query for Supplier {
     Ok(Supplier::from_row(rows.get(0)))
   }
 
-  fn update(&self, conn: &Connection) -> Result<(), Error> {
+  fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "UPDATE supplier SET zip = $1, tele = $2, name = $3, contact = $4, address = $5 WHERE id = $6",
-      &[&self.zip, &self.tele, &self.name, &self.contact, &self.address, &self.id]
+      &[&obj.zip, &obj.tele, &obj.name, &obj.contact, &obj.address, &obj.id]
     )?;
     Ok(())
   }

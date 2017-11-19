@@ -26,10 +26,10 @@ impl Goods {
 }
 
 impl Query for Goods {
-  fn create(&self, conn: &Connection) -> Result<(), Error> {
+  fn create(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO goods (id, name, sale_price) VALUES ($1, $2, $3)",
-      &[&self.id, &self.name, &self.sale_price]
+      &[&obj.id, &obj.name, &obj.sale_price]
     )?;
     Ok(())
   }
@@ -47,10 +47,10 @@ impl Query for Goods {
     Ok(Goods::from_row(rows.get(0)))
   }
 
-  fn update(&self, conn: &Connection) -> Result<(), Error> {
+  fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "UPDATE goods SET name = $1, sale_price = $2 WHERE id = $3",
-      &[&self.name, &self.sale_price, &self.id]
+      &[&obj.name, &obj.sale_price, &obj.id]
     )?;
     Ok(())
   }

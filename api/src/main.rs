@@ -1,5 +1,3 @@
-#[macro_use]
-extern crate nom;
 extern crate hyper;
 extern crate chrono;
 extern crate futures;
@@ -20,13 +18,19 @@ mod database;
 mod types;
 mod error;
 
+use std::rc::Rc;
+use hyper::server::Http;
+
+use database::Database;
+use service::ApiService;
+
 fn main() {
-  env_logger::init();
+  env_logger::init().expect("error/env-logger");
 
   let addr = "0.0.0.0:3000".parse().unwrap();
-  let server = hyper::server::Http::new().bind(&addr, || {
-    let db = database::Database::new("postgres://poi@localhost:5432/store");
-    Ok(service::ApiService::new(db))
+  let server = Http::new().bind(&addr, || {
+    let db = Rc::new(Database::new("postgres://poi@localhost:5432/store"));
+    Ok(ApiService::new(db))
   }).unwrap();
   server.run().unwrap();
 }

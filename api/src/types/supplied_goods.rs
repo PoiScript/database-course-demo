@@ -19,19 +19,17 @@ impl SuppliedGoods {
 
   fn from_row(row: Row) -> SuppliedGoods {
     SuppliedGoods::new(
-      row.get(0),
-      row.get(1),
-      row.get(2),
-      row.get(3)
+      row.get(0), row.get(1),
+      row.get(2), row.get(3)
     )
   }
 }
 
 impl Query for SuppliedGoods {
-  fn create(&self, conn: &Connection) -> Result<(), Error> {
+  fn create(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO supplied_goods (id, original_cost, goods_id, supplier_id) VALUES ($1, $2, $3, $4)",
-      &[&self.id, &self.original_cost, &self.goods_id, &self.supplier_id]
+      &[&obj.id, &obj.original_cost, &obj.goods_id, &obj.supplier_id]
     )?;
     Ok(())
   }
@@ -49,10 +47,10 @@ impl Query for SuppliedGoods {
     Ok(SuppliedGoods::from_row(rows.get(0)))
   }
 
-  fn update(&self, conn: &Connection) -> Result<(), Error> {
+  fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "UPDATE supplied_goods SET original_cost = $1 goods_id = $2 supplier_id = $3 WHERE id = $4",
-      &[&self.original_cost, &self.goods_id, &self.supplier_id, &self.id]
+      &[&obj.original_cost, &obj.goods_id, &obj.supplier_id, &obj.id]
     )?;
     Ok(())
   }

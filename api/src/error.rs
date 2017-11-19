@@ -4,18 +4,24 @@ use postgres::Error as PostgresError;
 
 #[derive(Debug)]
 pub enum Error {
+  NotFound,
   Hyper(HyperError),
   Serde(SerdeError),
   Postgres(PostgresError)
 }
 
 impl Error {
+  pub fn from_serde(err: SerdeError) -> Error {
+    Error::Serde(err)
+  }
+
   // return the error message in json format
   pub fn json(self) -> String {
     match self {
-      Error::Hyper(_) => format!(r#"{{"error":{{"code":"error/hyper"}}}}"#),
-      Error::Serde(_) => format!(r#"{{"error":{{"code":"error/serde-json"}}}}"#),
-      Error::Postgres(_) => format!(r#"{{"error":{{"code":"error/postgres-database"}}}}"#),
+      Error::NotFound => r#"{"error":{"code":"error/not-found"}}"#.to_string(),
+      Error::Hyper(_) => r#"{"error":{"code":"error/hyper"}}"#.to_string(),
+      Error::Serde(_) => r#"{"error":{"code":"error/serde-json"}}"#.to_string(),
+      Error::Postgres(_) => r#"{"error":{"code":"error/postgres-database"}}"#.to_string(),
     }
   }
 }

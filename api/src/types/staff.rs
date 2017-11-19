@@ -28,20 +28,17 @@ impl Staff {
 
   fn from_row(row: Row) -> Staff {
     Staff::new(
-      row.get(0),
-      row.get(1),
-      row.get(2),
-      row.get(3),
-      row.get(4)
+      row.get(0), row.get(1), row.get(2),
+      row.get(3), row.get(4)
     )
   }
 }
 
 impl Query for Staff {
-  fn create(&self, conn: &Connection) -> Result<(), Error> {
+  fn create(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO staff (id, tele, name, address, staff_department) VALUES ($1, $2, $3, $4, $5)",
-      &[&self.id, &self.tele, &self.name, &self.address, &self.staff_department]
+      &[&obj.id, &obj.tele, &obj.name, &obj.address, &obj.staff_department]
     )?;
     Ok(())
   }
@@ -59,10 +56,10 @@ impl Query for Staff {
     Ok(Staff::from_row(rows.get(0)))
   }
 
-  fn update(&self, conn: &Connection) -> Result<(), Error> {
+  fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "UPDATE staff SET tele = $1, name = $2, address = $3, staff_department = $4 WHERE id = $5",
-      &[&self.tele, &self.name, &self.address, &self.staff_department, &self.id]
+      &[&obj.tele, &obj.name, &obj.address, &obj.staff_department, &obj.id]
     )?;
     Ok(())
   }

@@ -19,19 +19,17 @@ impl Warehouse {
 
   fn from_row(row: Row) -> Warehouse {
     Warehouse::new(
-      row.get(0),
-      row.get(1),
-      row.get(2),
-      row.get(3)
+      row.get(0), row.get(1),
+      row.get(2), row.get(3)
     )
   }
 }
 
 impl Query for Warehouse {
-  fn create(&self, conn: &Connection) -> Result<(), Error> {
+  fn create(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "INSERT INTO warehouse (id, name, address, responsible_staff) VALUES ($1, $2, $3, $4)",
-      &[&self.id, &self.name, &self.address, &self.responsible_staff]
+      &[&obj.id, &obj.name, &obj.address, &obj.responsible_staff]
     )?;
     Ok(())
   }
@@ -49,10 +47,10 @@ impl Query for Warehouse {
     Ok(Warehouse::from_row(rows.get(0)))
   }
 
-  fn update(&self, conn: &Connection) -> Result<(), Error> {
+  fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
       "UPDATE warehouse SET name = $1, address = $2, responsible_staff = $3 WHERE id = $4",
-      &[&self.name, &self.address, &self.responsible_staff, &self.id]
+      &[&obj.name, &obj.address, &obj.responsible_staff, &obj.id]
     )?;
     Ok(())
   }
