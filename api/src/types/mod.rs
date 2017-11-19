@@ -19,6 +19,11 @@ pub use self::supplied_goods::SuppliedGoods;
 use error::Error;
 use postgres::Connection;
 
+#[derive(Deserialize)]
+pub struct Id {
+  pub id: i32
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct JoinedPurchase {
   pub customer: Customer,
@@ -37,28 +42,19 @@ impl JoinedPurchase {
     )? {
       vec.push(JoinedPurchase {
         customer: Customer::new(
-          row.get(0),
-          row.get(5),
-          row.get(2),
-          row.get(1),
-          row.get(3),
-          row.get(4)
+          row.get(0), row.get(5),
+          row.get(2), row.get(1),
+          row.get(3), row.get(4)
         ),
         warehouse: Warehouse::new(
-          row.get(6),
-          row.get(7),
-          row.get(8),
-          row.get(9)
+          row.get(6), row.get(7),
+          row.get(8), row.get(9)
         ),
         purchase: Purchase::new(
-          row.get(10),
-          row.get(11),
-          row.get(12),
-          row.get(13),
-          row.get(14),
-          row.get(15),
-          row.get(16),
-          row.get(17)
+          row.get(10), row.get(11),
+          row.get(12), row.get(13),
+          row.get(14), row.get(15),
+          row.get(16), row.get(17)
         )
       });
     }
@@ -82,19 +78,13 @@ impl JoinedReceipt {
     )? {
       vec.push(JoinedReceipt {
         warehouse: Warehouse::new(
-          row.get(0),
-          row.get(1),
-          row.get(2),
-          row.get(3)
+          row.get(0), row.get(1),
+          row.get(2), row.get(3)
         ),
         receipt: Receipt::new(
-          row.get(4),
-          row.get(5),
-          row.get(6),
-          row.get(7),
-          row.get(8),
-          row.get(9),
-          row.get(10)
+          row.get(4), row.get(5), row.get(6),
+          row.get(7), row.get(8),
+          row.get(9), row.get(10)
         )
       });
     }
@@ -120,23 +110,16 @@ impl JoinedSuppliedGoods {
     )? {
       vec.push(JoinedSuppliedGoods {
         goods: Goods::new(
-          row.get(0),
-          row.get(1),
-          row.get(2)
+          row.get(0), row.get(1), row.get(2)
         ),
         supplier: Supplier::new(
-          row.get(3),
-          row.get(8),
-          row.get(5),
-          row.get(4),
-          row.get(6),
-          row.get(7)
+          row.get(3), row.get(8),
+          row.get(5), row.get(4),
+          row.get(6), row.get(7)
         ),
         supplied_goods: SuppliedGoods::new(
-          row.get(9),
-          row.get(10),
-          row.get(11),
-          row.get(12)
+          row.get(9), row.get(10),
+          row.get(11), row.get(12)
         )
       });
     }

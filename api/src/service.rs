@@ -3,7 +3,7 @@ use std::rc::Rc;
 use futures::{future, Future, Stream};
 
 use hyper;
-use hyper::{Get, Post, StatusCode, Body, Headers};
+use hyper::{Get, Post, Delete, Put, StatusCode, Body, Headers};
 use hyper::header::ContentLength;
 use hyper::server::{Request, Response, Service};
 
@@ -76,28 +76,56 @@ impl Service for ApiService {
           .and_then(|s| Ok(Response::new().with_body(s)))
           .or_else(ApiService::error_res)
       ),
-      Post => Box::new(ApiService::get_body(body, headers)
+      Delete => Box::new(ApiService::get_body(body, headers)
         .and_then(move |chunks| {
-          match uri.path() {
-            GOODS => from_slice::<Goods>(&chunks).map_err(Error::from_serde)
-              .and_then(move |obj| db.create::<Goods>(obj)),
-            CUSTOMER => from_slice::<Customer>(&chunks).map_err(Error::from_serde)
-              .and_then(move |obj| db.create::<Customer>(obj)),
-            PURCHASE => from_slice::<Purchase>(&chunks).map_err(Error::from_serde)
-              .and_then(move |obj| db.create::<Purchase>(obj)),
-            RECEIPT => from_slice::<Receipt>(&chunks).map_err(Error::from_serde)
-              .and_then(move |obj| db.create::<Receipt>(obj)),
-            STAFF => from_slice::<Staff>(&chunks).map_err(Error::from_serde)
-              .and_then(move |obj| db.create::<Staff>(obj)),
-            _ => Err(Error::NotFound)
-          }
+          from_slice::<Id>(&chunks).map(|res| res.id).map_err(Error::from_serde)
+        })
+        .and_then(move |id| match uri.path() {
+          GOODS => db.delete_by_id::<Goods>(id),
+          CUSTOMER => db.delete_by_id::<Customer>(id),
+          PURCHASE => db.delete_by_id::<Purchase>(id),
+          RECEIPT => db.delete_by_id::<Receipt>(id),
+          STAFF => db.delete_by_id::<Staff>(id),
+          _ => Err(Error::NotFound)
         })
         .map(|_| Response::new().with_status(StatusCode::Ok))
         .or_else(ApiService::error_res)
       ),
-      _ => Box::new(future::ok(
-        Response::new().with_status(StatusCode::NotFound)
-      ))
+      Post => Box::new(ApiService::get_body(body, headers)
+        .and_then(move |chunks| match uri.path() {
+          GOODS => from_slice::<Goods>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<Goods>(obj)),
+          CUSTOMER => from_slice::<Customer>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<Customer>(obj)),
+          PURCHASE => from_slice::<Purchase>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<Purchase>(obj)),
+          RECEIPT => from_slice::<Receipt>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<Receipt>(obj)),
+          STAFF => from_slice::<Staff>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<Staff>(obj)),
+          _ => Err(Error::NotFound)
+        })
+        .map(|_| Response::new().with_status(StatusCode::Ok))
+        .or_else(ApiService::error_res)
+      ),
+      Put => Box::new(ApiService::get_body(body, headers)
+        .and_then(move |chunks| match uri.path() {
+          GOODS => from_slice::<Goods>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<Goods>(obj)),
+          CUSTOMER => from_slice::<Customer>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<Customer>(obj)),
+          PURCHASE => from_slice::<Purchase>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<Purchase>(obj)),
+          RECEIPT => from_slice::<Receipt>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<Receipt>(obj)),
+          STAFF => from_slice::<Staff>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<Staff>(obj)),
+          _ => Err(Error::NotFound)
+        })
+        .map(|_| Response::new().with_status(StatusCode::Ok))
+        .or_else(ApiService::error_res)
+      ),
+      _ => Box::new(future::err(Error::NotFound).or_else(ApiService::error_res))
     }
   }
 }

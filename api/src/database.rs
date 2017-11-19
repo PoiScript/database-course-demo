@@ -24,6 +24,10 @@ impl Database {
       .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
   }
 
+  pub fn update<T: Query>(&self, obj: T) -> Result<(), Error> {
+    T::update(&self.conn, obj)
+  }
+
   pub fn delete_by_id<T: Query + 'static>(&self, id: i32) -> Result<(), Error> {
     T::delete_by_id(&self.conn, id)
   }
