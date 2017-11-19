@@ -24,7 +24,7 @@ CREATE TABLE Customer (
 CREATE TABLE Goods (
   id INTEGER PRIMARY KEY,
   name CHAR(40) NOT NULL,
-  sale_price REAL NOT NULL
+  sale_price FLOAT NOT NULL
 );
 
 CREATE TABLE Supplier (
@@ -38,7 +38,7 @@ CREATE TABLE Supplier (
 
 CREATE TABLE Supplied_Goods (
   id INTEGER PRIMARY KEY,
-  original_cost REAL NOT NULL,
+  original_cost FLOAT NOT NULL,
   goods_id INTEGER NOT NULL REFERENCES Goods(id),
   supplier_id INTEGER NOT NULL REFERENCES Supplier(id)
 );
