@@ -1,0 +1,26 @@
+<h1 class="header">Goods</h1>
+<mat-expansion-panel *ngFor="let goods of goodsArray">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{goods.supplied_goods.id}}. {{goods.goods.name}}
+    </mat-panel-title>
+    <mat-panel-description>
+      来自: {{goods.supplier.name}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <h5>供应商:</h5>
+  <div class="expansion-panel-more">
+    <span><b>名称:</b> {{goods.supplier.name}}</span>
+    <span><b>地址:</b> {{goods.supplier.address}}</span>
+  </div>
+  <div class="expansion-panel-more">
+    <span><b>联系人:</b> {{goods.supplier.contact}}</span>
+    <span><b>电话:</b> {{goods.supplier.tele}}</span>
+    <span><b>邮编:</b> {{goods.supplier.zip}}</span>
+  </div>
+  <h5>价格:</h5>
+  <div class="expansion-panel-more">
+    <span><b>进货:</b> {{goods.supplied_goods.original_cost}}</span>
+    <span><b>出货:</b> {{goods.goods.sale_price}}</span>
+  </div>
+</mat-expansion-panel>

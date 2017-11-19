@@ -5,11 +5,13 @@ import {
   MatIconModule,
   MatCardModule,
   MatListModule,
+  MatInputModule,
   MatButtonModule,
+  MatDialogModule,
   MatSidenavModule,
   MatToolbarModule,
   MatExpansionModule,
-  MatFormFieldModule
+  MatFormFieldModule,
 } from '@angular/material'
 
 @NgModule({
@@ -22,7 +24,9 @@ import {
     MatIconModule,
     MatCardModule,
     MatListModule,
+    MatInputModule,
     MatButtonModule,
+    MatDialogModule,
     MatSidenavModule,
     MatToolbarModule,
     MatExpansionModule,

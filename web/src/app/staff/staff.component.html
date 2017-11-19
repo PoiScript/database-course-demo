@@ -1,0 +1,20 @@
+<h1 class="header">Staff</h1>
+<mat-expansion-panel *ngFor="let staff of staffs">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{staff.staff.name}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{staff.staff.staff_department}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-action-row>
+    <button mat-button>删除</button>
+    <button mat-button color="primary" (click)="openUpdateDialog(staff)">更新</button>
+  </mat-action-row>
+  <div class="expansion-panel-more">
+    <span><b>地址:</b> {{staff.staff.address}}</span>
+    <span><b>电话:</b> {{staff.staff.tele}}</span>
+    <span><b>总销售量:</b> {{staff.receipt_total | number:'.0-0'}}</span>
+  </div>
+</mat-expansion-panel>

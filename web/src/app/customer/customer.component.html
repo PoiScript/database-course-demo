@@ -1,0 +1,20 @@
+<h1 class="header">Customer</h1>
+<mat-expansion-panel *ngFor="let customer of customers">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{customer.id}}.&nbsp;{{customer.name}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{customer.address}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-action-row>
+    <button mat-button>删除</button>
+    <button mat-button color="primary" (click)="openUpdateDialog(customer)">更新</button>
+  </mat-action-row>
+  <div class="expansion-panel-more">
+    <span><b>联系人:</b> {{customer.contact}}</span>
+    <span><b>电话:</b> {{customer.tele}}</span>
+    <span><b>邮编:</b> {{customer.zip}}</span>
+  </div>
+</mat-expansion-panel>

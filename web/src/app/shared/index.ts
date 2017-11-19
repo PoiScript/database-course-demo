@@ -1,0 +1,5 @@
+export { Customer } from './customer.model'
+export { Goods, JoinedGoods, SuppliedGoods } from './goods.model'
+export { Staff, JoinedStaff } from './staff.model'
+export { Supplier } from './supplier.model'
+export { SharedModule } from './shared.module'
