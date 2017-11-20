@@ -51,6 +51,11 @@ impl Database {
     JoinedStaff::get_all(&self.conn)
       .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
   }
+
+  pub fn login(&self, req: LoginRequest) -> Result<String, Error> {
+    User::login(&self.conn, req.username, req.password)
+      .and_then(|ref v| to_string(v).map_err(|e| Error::Serde(e)))
+  }
 }
 
 pub trait Query where Self: Sized + Serialize {

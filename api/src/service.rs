@@ -18,6 +18,7 @@ const STAFF: &'static str = "/api/staff";
 const RECEIPT: &'static str = "/api/receipt";
 const CUSTOMER: &'static str = "/api/customer";
 const PURCHASE: &'static str = "/api/purchase";
+const LOGIN: &'static str = "/api/login";
 
 pub struct ApiService {
   db: Rc<Database>
@@ -81,7 +82,7 @@ impl Service for ApiService {
           from_slice::<Id>(&chunks).map(|res| res.id).map_err(Error::from_serde)
         })
         .and_then(move |id| match uri.path() {
-          GOODS => db.delete_by_id::<Goods>(id),
+          GOODS => db.delete_by_id::<SuppliedGoods>(id),
           CUSTOMER => db.delete_by_id::<Customer>(id),
           PURCHASE => db.delete_by_id::<Purchase>(id),
           RECEIPT => db.delete_by_id::<Receipt>(id),
@@ -93,25 +94,27 @@ impl Service for ApiService {
       ),
       Post => Box::new(ApiService::get_body(body, headers)
         .and_then(move |chunks| match uri.path() {
-          GOODS => from_slice::<Goods>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.create::<Goods>(obj)),
+          GOODS => from_slice::<SuppliedGoods>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.create::<SuppliedGoods>(obj)).map(|_| "[]".to_string()),
           CUSTOMER => from_slice::<Customer>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.create::<Customer>(obj)),
+            .and_then(move |obj| db.create::<Customer>(obj)).map(|_| "[]".to_string()),
           PURCHASE => from_slice::<Purchase>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.create::<Purchase>(obj)),
+            .and_then(move |obj| db.create::<Purchase>(obj)).map(|_| "[]".to_string()),
           RECEIPT => from_slice::<Receipt>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.create::<Receipt>(obj)),
+            .and_then(move |obj| db.create::<Receipt>(obj)).map(|_| "[]".to_string()),
           STAFF => from_slice::<Staff>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.create::<Staff>(obj)),
+            .and_then(move |obj| db.create::<Staff>(obj)).map(|_| "[]".to_string()),
+          LOGIN => from_slice::<LoginRequest>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.login(obj)),
           _ => Err(Error::NotFound)
         })
-        .map(|_| Response::new().with_status(StatusCode::Ok))
+        .map(|body| Response::new().with_body(body))
         .or_else(ApiService::error_res)
       ),
       Put => Box::new(ApiService::get_body(body, headers)
         .and_then(move |chunks| match uri.path() {
-          GOODS => from_slice::<Goods>(&chunks).map_err(Error::from_serde)
-            .and_then(move |obj| db.update::<Goods>(obj)),
+          GOODS => from_slice::<SuppliedGoods>(&chunks).map_err(Error::from_serde)
+            .and_then(move |obj| db.update::<SuppliedGoods>(obj)),
           CUSTOMER => from_slice::<Customer>(&chunks).map_err(Error::from_serde)
             .and_then(move |obj| db.update::<Customer>(obj)),
           PURCHASE => from_slice::<Purchase>(&chunks).map_err(Error::from_serde)
