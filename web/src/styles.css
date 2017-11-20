@@ -24,3 +24,9 @@ b {
 .form-field-full {
   width: 100%;
 }
+
+.fab {
+  bottom: 20px;
+  right: 20px;
+  position: fixed !important;
+}

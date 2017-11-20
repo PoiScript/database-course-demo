@@ -1,2 +1,40 @@
-<h1 class="header">Receipt</h1>
-
+<h1 class="header">进货</h1>
+<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon>
+</button>
+<mat-expansion-panel *ngFor="let receipt of receipts">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{receipt.receipt.date}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{receipt.supplier.name}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <h5>供货商</h5>
+  <div class="expansion-panel-more">
+    <span><b>联系人:</b> {{receipt.supplier.contact}}</span>
+    <span><b>电话:</b> {{receipt.supplier.tele}}</span>
+    <span><b>邮编:</b> {{receipt.supplier.zip}}</span>
+  </div>
+  <h5>商品</h5>
+  <div class="expansion-panel-more">
+    <span><b>编号:</b> {{receipt.receipt.supplied_goods_id}}</span>
+    <span><b>名称:</b> {{receipt.goods_name}}</span>
+  </div>
+  <div class="expansion-panel-more">
+    <span><b>原价:</b> {{receipt.goods_original_cost}}</span>
+    <span><b>售价:</b> {{receipt.goods_sale_price}}</span>
+    <span><b>数目:</b> {{receipt.receipt.supplied_goods_count}}</span>
+  </div>
+  <h5>仓库</h5>
+  <div class="expansion-panel-more">
+    <span><b>名称:</b> {{receipt.warehouse.name}}</span>
+    <span><b>地址:</b> {{receipt.warehouse.address}}</span>
+  </div>
+  <h5>负责人</h5>
+  <div class="expansion-panel-more">
+    <span><b>名称:</b> {{receipt.staff.name}}</span>
+    <span><b>电话:</b> {{receipt.staff.tele}}</span>
+  </div>
+</mat-expansion-panel>

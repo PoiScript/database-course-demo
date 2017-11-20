@@ -1,13 +1,20 @@
-<h1 class="header">Goods</h1>
+<h1 class="header">商品</h1>
+<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon>
+</button>
 <mat-expansion-panel *ngFor="let goods of goodsArray">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{goods.supplied_goods.id}}. {{goods.goods.name}}
+      {{goods.goods.name}}
     </mat-panel-title>
     <mat-panel-description>
       来自: {{goods.supplier.name}}
     </mat-panel-description>
   </mat-expansion-panel-header>
+  <mat-action-row>
+    <button mat-button (click)="deleteGoods(goods.goods.id)">删除</button>
+    <button mat-button color="primary" (click)="openUpdateDialog(goods.goods)">更新</button>
+  </mat-action-row>
   <h5>供应商:</h5>
   <div class="expansion-panel-more">
     <span><b>名称:</b> {{goods.supplier.name}}</span>

@@ -1,1 +1,35 @@
-<h1 class="header">Purchase</h1>
+<h1 class="header">出货</h1>
+<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon>
+</button>
+<mat-expansion-panel *ngFor="let purchase of purchases">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{purchase.purchase.date}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{purchase.customer.name}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <h5>客户</h5>
+  <div class="expansion-panel-more">
+    <span><b>联系人:</b> {{purchase.customer.contact}}</span>
+    <span><b>电话:</b> {{purchase.customer.tele}}</span>
+    <span><b>邮编:</b> {{purchase.customer.zip}}</span>
+  </div>
+  <h5>商品</h5>
+  <div class="expansion-panel-more">
+    <span><b>编号:</b> {{purchase.purchase.supplied_goods_id}}</span>
+    <span><b>名称:</b> {{purchase.goods_name}}</span>
+  </div>
+  <div class="expansion-panel-more">
+    <span><b>原价:</b> {{purchase.goods_original_cost}}</span>
+    <span><b>售价:</b> {{purchase.goods_sale_price}}</span>
+    <span><b>数目:</b> {{purchase.purchase.supplied_goods_count}}</span>
+  </div>
+  <h5>仓库</h5>
+  <div class="expansion-panel-more">
+    <span><b>名称:</b> {{purchase.warehouse.name}}</span>
+    <span><b>地址:</b> {{purchase.warehouse.address}}</span>
+  </div>
+</mat-expansion-panel>

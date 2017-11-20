@@ -1,22 +1,23 @@
-import { Staff } from './staff.model'
+import { Customer } from './customer.model'
 import { Warehouse } from './warehouse.model'
-import { Supplier } from './supplier.model'
+import { Staff } from './staff.model'
 
-export class Receipt {
+export class Purchase {
   id: number
   date: string
   is_resolved: boolean
+  customer_id: number
   warehouse_id: number
   responsible_staff: number
   supplied_goods_id: number
   supplied_goods_count: number
 }
 
-export class JoinedReceipt {
+export class JoinedPurchase {
+  customer: Customer
   warehouse: Warehouse
-  receipt: Receipt
+  purchase: Purchase
   staff: Staff
-  supplier: Supplier
   goods_name: string
   goods_original_cost: number
   goods_sale_price: number

@@ -6,7 +6,6 @@ import { Staff } from '../shared'
 @Component({
   templateUrl: './staff-editor-dialog.component.html'
 })
-
 export class StaffEditorDialogComponent {
 
   constructor (@Inject(MAT_DIALOG_DATA) public data: Staff) { }

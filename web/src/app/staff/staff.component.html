@@ -1,4 +1,7 @@
-<h1 class="header">Staff</h1>
+<h1 class="header">员工</h1>
+<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon>
+</button>
 <mat-expansion-panel *ngFor="let staff of staffs">
   <mat-expansion-panel-header>
     <mat-panel-title>
@@ -9,8 +12,8 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <mat-action-row>
-    <button mat-button>删除</button>
-    <button mat-button color="primary" (click)="openUpdateDialog(staff)">更新</button>
+    <button mat-button (click)="deleteStaff(staff.staff.id)">删除</button>
+    <button mat-button color="primary" (click)="openUpdateDialog(staff.staff)">更新</button>
   </mat-action-row>
   <div class="expansion-panel-more">
     <span><b>地址:</b> {{staff.staff.address}}</span>

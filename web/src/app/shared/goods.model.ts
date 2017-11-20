@@ -1,17 +1,18 @@
 import { Supplier } from './supplier.model'
 
 export class Goods {
-  name: String
-  sale_price: Number
+  id: number
+  name: string
+  sale_price: number
 }
 
 export class SuppliedGoods {
-  id: Number;
-  original_cost: Number;
+  id: number
+  original_cost: number
 }
 
 export class JoinedGoods {
-  goods: Goods;
-  supplier: Supplier;
-  supplied_goods: SuppliedGoods;
+  goods: Goods
+  supplier: Supplier
+  supplied_goods: SuppliedGoods
 }

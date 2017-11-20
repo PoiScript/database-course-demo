@@ -9,9 +9,9 @@ import { CoreModule } from './core'
 import { SharedModule } from './shared'
 
 import { CustomerComponent, CustomerEditorDialogComponent } from './customer'
-import { GoodsComponent } from './goods/goods.component'
-import { PurchaseComponent } from './purchase/purchase.component'
-import { ReceiptComponent } from './receipt/receipt.component'
+import { GoodsComponent, GoodsEditorDialogComponent } from './goods'
+import { PurchaseComponent, PurchaseEditorDialogComponent } from './purchase'
+import { ReceiptComponent, ReceiptEditorDialogComponent } from './receipt'
 import { StaffComponent, StaffEditorDialogComponent } from './staff'
 
 @NgModule({
@@ -20,14 +20,20 @@ import { StaffComponent, StaffEditorDialogComponent } from './staff'
     CustomerComponent,
     CustomerEditorDialogComponent,
     GoodsComponent,
+    GoodsEditorDialogComponent,
     PurchaseComponent,
+    PurchaseEditorDialogComponent,
     ReceiptComponent,
+    ReceiptEditorDialogComponent,
     StaffComponent,
     StaffEditorDialogComponent
   ],
   entryComponents: [
+    GoodsEditorDialogComponent,
+    StaffEditorDialogComponent,
+    PurchaseEditorDialogComponent,
     CustomerEditorDialogComponent,
-    StaffEditorDialogComponent
+    ReceiptEditorDialogComponent
   ],
   imports: [
     AppRoutingModule,

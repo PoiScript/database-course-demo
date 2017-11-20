@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>更新进货</h1>
+<div mat-dialog-content>
+  <mat-form-field class="form-field-full">
+    <input matInput required type="number" placeholder="客户" [(ngModel)]="data.customer_id">
+  </mat-form-field>
+  <mat-form-field class="form-field-full">
+    <input matInput required type="number" placeholder="仓库" [(ngModel)]="data.warehouse_id">
+  </mat-form-field>
+  <mat-form-field class="form-field-full">
+    <input matInput required type="number" placeholder="员工" [(ngModel)]="data.responsible_staff">
+  </mat-form-field>
+  <mat-form-field class="form-field-full">
+    <input matInput required type="number" placeholder="商品编号" [(ngModel)]="data.supplied_goods_id">
+  </mat-form-field>
+  <mat-form-field class="form-field-full">
+    <input matInput required type="number" placeholder="商品数目" [(ngModel)]="data.supplied_goods_count">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data">Ok</button>
+</div>

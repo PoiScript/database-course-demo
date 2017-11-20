@@ -1,15 +1,18 @@
-<h1 class="header">Customer</h1>
+<h1 class="header">客户</h1>
+<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon>
+</button>
 <mat-expansion-panel *ngFor="let customer of customers">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{customer.id}}.&nbsp;{{customer.name}}
+      {{customer.name}}
     </mat-panel-title>
     <mat-panel-description>
       {{customer.address}}
     </mat-panel-description>
   </mat-expansion-panel-header>
   <mat-action-row>
-    <button mat-button>删除</button>
+    <button mat-button (click)="deleteCustomer(customer.id)">删除</button>
     <button mat-button color="primary" (click)="openUpdateDialog(customer)">更新</button>
   </mat-action-row>
   <div class="expansion-panel-more">

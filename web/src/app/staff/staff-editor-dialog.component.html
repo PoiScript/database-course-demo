@@ -1,17 +1,16 @@
-<h1 mat-dialog-title>Hi data.name</h1>
+<h1 mat-dialog-title>更新员工</h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
   <mat-form-field class="form-field-full">
-    <input matInput placeholder="名称" [(ngModel)]="data.name">
+    <input matInput required placeholder="名称" [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field class="form-field-full">
-    <input matInput type="number" placeholder="电话" [(ngModel)]="data.tele">
+    <input matInput required type="number" placeholder="电话" [(ngModel)]="data.tele">
   </mat-form-field>
   <mat-form-field class="form-field-full">
-    <input matInput placeholder="职位" [(ngModel)]="data.staff_department">
+    <input matInput required placeholder="职位" [(ngModel)]="data.staff_department">
   </mat-form-field>
   <mat-form-field class="form-field-full">
-    <input matInput placeholder="地址" [(ngModel)]="data.address">
+    <input matInput required placeholder="地址" [(ngModel)]="data.address">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

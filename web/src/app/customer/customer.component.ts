@@ -16,8 +16,11 @@ export class CustomerComponent implements OnInit {
                public dialog: MatDialog) { }
 
   ngOnInit () {
-    this.api.getCustomers()
-      .subscribe(customers => this.customers = customers)
+    this.loadCustomers()
+  }
+
+  loadCustomers () {
+    this.api.getCustomers().subscribe(customers => this.customers = customers)
   }
 
   openUpdateDialog (customer: Customer) {
@@ -28,12 +31,33 @@ export class CustomerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          console.log(result)
           this.api.updateCustomer(result as Customer)
             .subscribe(_ => {})
         }
       }
     )
+  }
+
+  openCreateDialog () {
+    let id = Math.max.apply(Math, this.customers.map(c => c.id)) + 1
+
+    let dialogRef = this.dialog.open(CustomerEditorDialogComponent, {
+      data: {id}
+    })
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.api.createCustomer(result as Customer)
+            .subscribe(_ => {})
+        }
+      }
+    )
+  }
+
+  deleteCustomer (id: number) {
+    this.api.deleteCustomer(id)
+      .subscribe(_ => {})
   }
 
 }

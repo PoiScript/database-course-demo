@@ -16,8 +16,11 @@ export class StaffComponent implements OnInit {
                public dialog: MatDialog) { }
 
   ngOnInit () {
-    this.api.getStaffs()
-      .subscribe(staffs => this.staffs = staffs)
+    this.loadStaffs()
+  }
+
+  loadStaffs() {
+    this.api.getStaffs().subscribe(staffs => this.staffs = staffs)
   }
 
   openUpdateDialog (staff: Staff) {
@@ -28,12 +31,33 @@ export class StaffComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-          console.log(result)
           this.api.updateStaff(result as Staff)
             .subscribe(_ => {})
         }
       }
     )
+  }
+
+  openCreateDialog () {
+    let id = Math.max.apply(Math, this.staffs.map(s => s.staff.id)) + 1
+
+    let dialogRef = this.dialog.open(StaffEditorDialogComponent, {
+      data: {id}
+    })
+
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.api.createStaff(result as Staff)
+            .subscribe(_ => {})
+        }
+      }
+    )
+  }
+
+  deleteStaff (id: number) {
+    this.api.deleteStaff(id)
+      .subscribe(_ => {})
   }
 
 }
