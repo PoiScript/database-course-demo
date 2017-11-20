@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 import { ApiService } from '../core'
-import { Goods, JoinedGoods } from '../shared'
+import { Goods, JoinedGoods, SuppliedGoods } from '../shared'
 import { MatDialog } from '@angular/material'
 import { GoodsEditorDialogComponent } from './goods-editor-dialog.component'
 
@@ -23,9 +23,9 @@ export class GoodsComponent implements OnInit {
     this.api.getGoods().subscribe(goods => this.goodsArray = goods)
   }
 
-  openUpdateDialog (goods: Goods) {
+  openUpdateDialog (supplied_goods: SuppliedGoods) {
     let dialogRef = this.dialog.open(GoodsEditorDialogComponent, {
-      data: goods
+      data: supplied_goods
     })
 
     dialogRef.afterClosed().subscribe(
@@ -39,7 +39,7 @@ export class GoodsComponent implements OnInit {
   }
 
   openCreateDialog () {
-    let id = Math.max.apply(Math, this.goodsArray.map(c => c.goods.id)) + 1
+    let id = Math.max.apply(Math, this.goodsArray.map(c => c.supplied_goods.id)) + 1
 
     let dialogRef = this.dialog.open(GoodsEditorDialogComponent, {
       data: {id}

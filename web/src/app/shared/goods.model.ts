@@ -8,6 +8,8 @@ export class Goods {
 
 export class SuppliedGoods {
   id: number
+  goods_id: number
+  supplier_id: number
   original_cost: number
 }
 
