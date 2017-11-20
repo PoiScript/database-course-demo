@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppComponent } from './app.component'
-import { AppRoutingModule } from './app-routing.module'
+import { AppRoutingModule, AuthGuard } from './app-routing.module'
 import { CoreModule } from './core'
 import { SharedModule } from './shared'
 
@@ -13,10 +13,12 @@ import { GoodsComponent, GoodsEditorDialogComponent } from './goods'
 import { PurchaseComponent, PurchaseEditorDialogComponent } from './purchase'
 import { ReceiptComponent, ReceiptEditorDialogComponent } from './receipt'
 import { StaffComponent, StaffEditorDialogComponent } from './staff'
+import { LoginComponent }  from './login/login.component'
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     CustomerComponent,
     CustomerEditorDialogComponent,
     GoodsComponent,
@@ -42,6 +44,9 @@ import { StaffComponent, StaffEditorDialogComponent } from './staff'
     CoreModule,
     SharedModule,
     HttpClientModule
+  ],
+  providers: [
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

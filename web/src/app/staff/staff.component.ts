@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 
-import { ApiService } from '../core'
+import { ApiService, UserService } from '../core'
 import { JoinedStaff, Staff } from '../shared'
 import { StaffEditorDialogComponent } from './staff-editor-dialog.component'
 
@@ -13,10 +13,15 @@ export class StaffComponent implements OnInit {
   staffs: JoinedStaff[]
 
   constructor (private api: ApiService,
+               private userService: UserService,
                public dialog: MatDialog) { }
 
   ngOnInit () {
     this.loadStaffs()
+  }
+
+  isLeader (): boolean {
+    return this.userService.isLeader()
   }
 
   loadStaffs() {

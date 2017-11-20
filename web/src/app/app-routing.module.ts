@@ -1,23 +1,42 @@
-import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
+import { Injectable, NgModule } from '@angular/core'
+import { CanActivate, Router, RouterModule, Routes } from '@angular/router'
 
-import { CustomerComponent } from './customer/customer.component'
-import { GoodsComponent } from './goods/goods.component'
-import { PurchaseComponent } from './purchase/purchase.component'
-import { ReceiptComponent } from './receipt/receipt.component'
-import { StaffComponent } from './staff/staff.component'
+import { CustomerComponent } from './customer'
+import { GoodsComponent } from './goods'
+import { PurchaseComponent } from './purchase'
+import { ReceiptComponent } from './receipt'
+import { StaffComponent } from './staff'
+import { LoginComponent } from './login/login.component'
+import { UserService } from './core'
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+  constructor (private userService: UserService,
+               private router: Router) {}
+
+  canActivate () {
+    if (this.userService.isLogged()) {
+      return true
+    }
+    this.router.navigate(['/login'])
+    return false
+  }
+}
 
 const routes: Routes = [
-  {path: 'customer', component: CustomerComponent},
-  {path: 'goods', component: GoodsComponent},
-  {path: 'purchase', component: PurchaseComponent},
-  {path: 'receipt', component: ReceiptComponent},
-  {path: 'staff', component: StaffComponent}
+  {path: '', redirectTo: 'receipt', pathMatch: 'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'customer', component: CustomerComponent, canActivate: [AuthGuard]},
+  {path: 'goods', component: GoodsComponent, canActivate: [AuthGuard]},
+  {path: 'purchase', component: PurchaseComponent, canActivate: [AuthGuard]},
+  {path: 'receipt', component: ReceiptComponent, canActivate: [AuthGuard]},
+  {path: 'staff', component: StaffComponent, canActivate: [AuthGuard]}
 ]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
-
 export class AppRoutingModule {}

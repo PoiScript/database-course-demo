@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 
-import { ApiService } from '../core'
+import { ApiService, UserService } from '../core'
 import { Goods, JoinedGoods, SuppliedGoods } from '../shared'
 import { MatDialog } from '@angular/material'
 import { GoodsEditorDialogComponent } from './goods-editor-dialog.component'
@@ -13,10 +13,15 @@ export class GoodsComponent implements OnInit {
   goodsArray: JoinedGoods[]
 
   constructor (private api: ApiService,
+               private userService: UserService,
                public dialog: MatDialog) { }
 
   ngOnInit () {
     this.loadGoods()
+  }
+
+  isLeader (): boolean {
+    return this.userService.isLeader()
   }
 
   loadGoods () {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 
-import { ApiService } from '../core'
+import { ApiService, UserService } from '../core'
 import { Customer } from '../shared'
 import { CustomerEditorDialogComponent } from './customer-editor-dialog.component'
 
@@ -13,10 +13,15 @@ export class CustomerComponent implements OnInit {
   customers: Customer[]
 
   constructor (private api: ApiService,
+               private userService: UserService,
                public dialog: MatDialog) { }
 
   ngOnInit () {
     this.loadCustomers()
+  }
+
+  isLeader (): boolean {
+    return this.userService.isLeader()
   }
 
   loadCustomers () {

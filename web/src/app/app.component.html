@@ -10,14 +10,16 @@
   </mat-sidenav>
   <div class="content">
     <mat-toolbar class="toolbar">
-      <button mat-icon-button (click)="sidenav.open()">
+      <button *ngIf="isLogged()" mat-icon-button (click)="sidenav.open()">
         <mat-icon>menu</mat-icon>
       </button>
       Demo
     </mat-toolbar>
     <div class="ribbon"></div>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+    <div class="main-content">
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </div>
   </div>
 </mat-sidenav-container>

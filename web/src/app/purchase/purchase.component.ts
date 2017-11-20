@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 
 import { JoinedPurchase, Purchase } from '../shared'
-import { ApiService } from '../core'
+import { ApiService, UserService } from '../core'
 import { PurchaseEditorDialogComponent } from './purchase-editor-dialog.component'
 
 @Component({
@@ -13,10 +13,15 @@ export class PurchaseComponent implements OnInit {
   purchases: JoinedPurchase[]
 
   constructor (private api: ApiService,
+               private userService: UserService,
                public dialog: MatDialog) { }
 
   ngOnInit () {
     this.loadPurchases()
+  }
+
+  isLeader (): boolean {
+    return this.userService.isLeader()
   }
 
   loadPurchases () {

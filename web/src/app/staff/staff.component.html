@@ -1,5 +1,5 @@
 <h1 class="header">员工</h1>
-<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+<button *ngIf="isLeader()" mat-fab color="primary" class="fab" (click)="openCreateDialog()">
   <mat-icon>add</mat-icon>
 </button>
 <mat-expansion-panel *ngFor="let staff of staffs">
@@ -12,7 +12,7 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <mat-action-row>
-    <button mat-button (click)="deleteStaff(staff.staff.id)">删除</button>
+    <button mat-button *ngIf="isLeader()" (click)="deleteStaff(staff.staff.id)">删除</button>
     <button mat-button color="primary" (click)="openUpdateDialog(staff.staff)">更新</button>
   </mat-action-row>
   <div class="expansion-panel-more">

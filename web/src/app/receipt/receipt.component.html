@@ -1,5 +1,5 @@
 <h1 class="header">进货</h1>
-<button mat-fab color="primary" class="fab" (click)="openCreateDialog()">
+<button *ngIf="isLeader()" mat-fab color="primary" class="fab" (click)="openCreateDialog()">
   <mat-icon>add</mat-icon>
 </button>
 <mat-expansion-panel *ngFor="let receipt of receipts">

@@ -12,7 +12,8 @@ import {
   JoinedStaff,
   Purchase,
   Receipt,
-  Staff
+  Staff,
+  User
 } from '../shared'
 
 @Injectable()
@@ -23,6 +24,7 @@ export class ApiService {
   private staffUrl = environment.api_url + 'staff'
   private receiptUrl = environment.api_url + 'receipt'
   private purchaseUrl = environment.api_url + 'purchase'
+  private loginUrl = environment.api_url + 'login'
 
   constructor (private http: HttpClient) {}
 
@@ -78,32 +80,20 @@ export class ApiService {
     return this.http.get<JoinedPurchase[]>(this.purchaseUrl)
   }
 
-  updatePurchase (purchase: Purchase): Observable<any> {
-    return this.http.put(this.purchaseUrl, purchase)
-  }
-
   createPurchase (purchase: Purchase): Observable<any> {
     return this.http.post(this.purchaseUrl, purchase)
-  }
-
-  deletePurchase (id: number): Observable<any> {
-    return this.http.request('DELETE', this.purchaseUrl, {body: {id}})
   }
 
   getReceipts (): Observable<JoinedReceipt[]> {
     return this.http.get<JoinedReceipt[]>(this.receiptUrl)
   }
 
-  updateReceipt (receipt: Receipt): Observable<any> {
-    return this.http.put(this.receiptUrl, receipt)
-  }
-
   createReceipt (receipt: Receipt): Observable<any> {
     return this.http.post(this.receiptUrl, receipt)
   }
 
-  deleteReceipt (id: number): Observable<any> {
-    return this.http.request('DELETE', this.receiptUrl, {body: {id}})
+  login (username: string, password: string): Observable<User> {
+    return this.http.post<User>(this.loginUrl, {username, password})
   }
 
 }

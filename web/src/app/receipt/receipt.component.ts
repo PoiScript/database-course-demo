@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 
-import { ApiService } from '../core'
+import { ApiService, UserService } from '../core'
 import { JoinedReceipt, Receipt } from '../shared'
 import { ReceiptEditorDialogComponent } from './receipt-editor-dialog.component'
 
@@ -13,10 +13,15 @@ export class ReceiptComponent implements OnInit {
   receipts: JoinedReceipt[]
 
   constructor (private api: ApiService,
+               private userService: UserService,
                public dialog: MatDialog) { }
 
   ngOnInit () {
     this.loadReceipts()
+  }
+
+  isLeader (): boolean {
+    return this.userService.isLeader()
   }
 
   loadReceipts () {
