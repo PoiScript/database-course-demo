@@ -71,9 +71,8 @@ impl Query for Receipt {
 
   fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
-      "UPDATE receipt date = $1
-      is_resolved = $2 warehouse_id = $3 responsible_staff = $4
-      supplied_goods_id = $5 supplied_goods_count = $6 WHERE id = $7",
+      "UPDATE receipt SET date = $1, is_resolved = $2, warehouse_id = $3,
+      responsible_staff = $4, supplied_goods_id = $5, supplied_goods_count = $6 WHERE id = $7",
       &[&obj.date, &obj.is_resolved, &obj.warehouse_id, &obj.responsible_staff,
         &obj.supplied_goods_id, &obj.supplied_goods_count, &obj.id]
     )?;

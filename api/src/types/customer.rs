@@ -55,7 +55,7 @@ impl Query for Customer {
 
   fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
-      "UPDATE customer zip = $1 tele = $2 name = $3 contact = $4 address = $5 WHERE id = $6",
+      "UPDATE customer SET zip = $1, tele = $2, name = $3, contact = $4, address = $5 WHERE id = $6",
       &[&obj.zip, &obj.tele, &obj.name, &obj.contact, &obj.address, &obj.id]
     )?;
     Ok(())

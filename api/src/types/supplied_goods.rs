@@ -49,7 +49,7 @@ impl Query for SuppliedGoods {
 
   fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
-      "UPDATE supplied_goods SET original_cost = $1 goods_id = $2 supplier_id = $3 WHERE id = $4",
+      "UPDATE supplied_goods SET original_cost = $1, goods_id = $2, supplier_id = $3 WHERE id = $4",
       &[&obj.original_cost, &obj.goods_id, &obj.supplier_id, &obj.id]
     )?;
     Ok(())

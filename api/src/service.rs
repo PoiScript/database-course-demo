@@ -88,7 +88,7 @@ impl Service for ApiService {
           STAFF => db.delete_by_id::<Staff>(id),
           _ => Err(Error::NotFound)
         })
-        .map(|_| Response::new().with_status(StatusCode::Ok))
+        .map(|_| Response::new().with_body("[]".to_string()))
         .or_else(ApiService::error_res)
       ),
       Post => Box::new(ApiService::get_body(body, headers)
@@ -122,7 +122,7 @@ impl Service for ApiService {
             .and_then(move |obj| db.update::<Staff>(obj)),
           _ => Err(Error::NotFound)
         })
-        .map(|_| Response::new().with_status(StatusCode::Ok))
+        .map(|_| Response::new().with_body("[]".to_string()))
         .or_else(ApiService::error_res)
       ),
       _ => Box::new(future::err(Error::NotFound).or_else(ApiService::error_res))

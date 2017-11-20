@@ -67,8 +67,8 @@ impl Query for Purchase {
 
   fn update(conn: &Connection, obj: Self) -> Result<(), Error> {
     &conn.execute(
-      "UPDATE purchase date = $1 is_resolved = $2 customer_id = $3 warehouse_id = $4
-      responsible_staff = $5 supplied_goods_id = $6 supplied_goods_count = $7 WHERE id = $8",
+      "UPDATE purchase SET date = $1, is_resolved = $2, customer_id = $3, warehouse_id = $4,
+      responsible_staff = $5, supplied_goods_id = $6, supplied_goods_count = $7 WHERE id = $8",
       &[&obj.date, &obj.is_resolved, &obj.customer_id, &obj.warehouse_id,
         &obj.responsible_staff, &obj.supplied_goods_id, &obj.supplied_goods_count, &obj.id]
     )?;
