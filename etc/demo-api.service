@@ -1,0 +1,9 @@
+[Unit]
+Description=Demo API Server
+
+[Service]
+WorkingDirectory=/path/to/api/directory
+ExecStart=/path/to/cargo run --release
+
+[Install]
+WantedBy=multi-user.target
