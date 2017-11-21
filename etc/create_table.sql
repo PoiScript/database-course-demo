@@ -1,7 +1,18 @@
+CREATE TYPE role AS ENUM (
+  'Manager',
+  'Leader'
+);
+
+CREATE TABLE StoreUser (
+  username CHAR(20) PRIMARY KEY,
+  password CHAR(20) NOT NULL,
+  user_role role NOT NULL
+);
+
 CREATE TYPE department AS ENUM (
-    'Selling',
-    'Warehouseman',
-    'Purchasing'
+  'Selling',
+  'Warehouseman',
+  'Purchasing'
 );
 
 CREATE TABLE Staff (

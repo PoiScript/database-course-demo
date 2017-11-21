@@ -1,3 +1,7 @@
+INSERT INTO StoreUser VALUES
+  ('admin', 'admin', 'Leader'),
+  ('poi', 'poi', 'Manager');
+
 INSERT INTO Staff VALUES
   (1, 'Alex', 55233066, '3676 Boone Street', 'Warehouseman'),
   (2, 'Steve', 77897884, '304 Doctors Drive', 'Selling'),
