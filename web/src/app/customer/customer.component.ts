@@ -37,7 +37,7 @@ export class CustomerComponent implements OnInit {
       result => {
         if (result) {
           this.api.updateCustomer(result as Customer)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadCustomers())
         }
       }
     )
@@ -54,7 +54,7 @@ export class CustomerComponent implements OnInit {
       result => {
         if (result) {
           this.api.createCustomer(result as Customer)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadCustomers())
         }
       }
     )
@@ -62,7 +62,7 @@ export class CustomerComponent implements OnInit {
 
   deleteCustomer (id: number) {
     this.api.deleteCustomer(id)
-      .subscribe(_ => {})
+      .subscribe(_ => this.loadCustomers())
   }
 
 }

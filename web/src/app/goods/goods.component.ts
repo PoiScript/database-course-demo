@@ -37,7 +37,7 @@ export class GoodsComponent implements OnInit {
       result => {
         if (result) {
           this.api.updateGoods(result as Goods)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadGoods())
         }
       }
     )

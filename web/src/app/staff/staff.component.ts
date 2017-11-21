@@ -24,7 +24,7 @@ export class StaffComponent implements OnInit {
     return this.userService.isLeader()
   }
 
-  loadStaffs() {
+  loadStaffs () {
     this.api.getStaffs().subscribe(staffs => this.staffs = staffs)
   }
 
@@ -37,7 +37,7 @@ export class StaffComponent implements OnInit {
       result => {
         if (result) {
           this.api.updateStaff(result as Staff)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadStaffs())
         }
       }
     )
@@ -54,7 +54,7 @@ export class StaffComponent implements OnInit {
       result => {
         if (result) {
           this.api.createStaff(result as Staff)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadStaffs())
         }
       }
     )
@@ -62,7 +62,7 @@ export class StaffComponent implements OnInit {
 
   deleteStaff (id: number) {
     this.api.deleteStaff(id)
-      .subscribe(_ => {})
+      .subscribe(_ => this.loadStaffs())
   }
 
 }

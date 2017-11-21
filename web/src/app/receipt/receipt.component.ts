@@ -40,7 +40,7 @@ export class ReceiptComponent implements OnInit {
       result => {
         if (result) {
           this.api.createReceipt(result as Receipt)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadReceipts())
         }
       }
     )

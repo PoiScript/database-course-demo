@@ -40,7 +40,7 @@ export class PurchaseComponent implements OnInit {
       result => {
         if (result) {
           this.api.createPurchase(result as Purchase)
-            .subscribe(_ => {})
+            .subscribe(_ => this.loadPurchases())
         }
       }
     )
